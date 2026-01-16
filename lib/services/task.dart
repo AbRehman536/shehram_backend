@@ -65,14 +65,4 @@ class TaskServices{
     );
   }
 
-  ///get task by priorityID
-  Stream<List<TaskModel>> getTaskByPriorityID(String priorityID){
-    return FirebaseFirestore.instance
-        .collection(taskCollection)
-        .where("priorityID" , isEqualTo: priorityID)
-        .snapshots()
-        .map((taskList)=> taskList.docs
-        .map((taskJson) => TaskModel.fromJson(taskJson.data())).toList()
-    );
-  }
 }
