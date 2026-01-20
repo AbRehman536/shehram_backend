@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shehram_backend/services/auth.dart';
+import 'package:shehram_backend/views/get_all_task.dart';
 import 'package:shehram_backend/views/register_user.dart';
 import 'package:shehram_backend/views/reset_password.dart';
 
@@ -28,7 +29,7 @@ class _LoginState extends State<Login> {
                 email: emailController.text, password: passwordController.text)
                 .then((val){
                   if(val!.emailVerified == true){
-                    Navigator.pushNamed(context, "/home");
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> GetAllTask()));
                   }else{
                     showDialog(context: context, builder: (BuildContext context) {
                       return AlertDialog(

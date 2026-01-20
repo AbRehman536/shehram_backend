@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shehram_backend/models/task.dart';
 import 'package:shehram_backend/services/task.dart';
+import 'package:shehram_backend/views/get_priority.dart';
 import 'package:shehram_backend/views/update_task.dart';
 
 class GetAllTask extends StatelessWidget {
@@ -12,6 +13,11 @@ class GetAllTask extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("Get All Task"),
+        actions: [
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GetPriority()));
+          }, icon: Icon(Icons.category))
+        ],
       ),
       body: StreamProvider.value(
           value: TaskServices().getAllTask(),
