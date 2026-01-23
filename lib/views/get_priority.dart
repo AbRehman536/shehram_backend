@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shehram_backend/models/priority.dart';
 import 'package:shehram_backend/services/priority.dart';
 import 'package:shehram_backend/views/create_priority.dart';
+import 'package:shehram_backend/views/get_priorities.dart';
 
 class GetPriority extends StatelessWidget {
   const GetPriority({super.key});
@@ -39,6 +40,9 @@ class GetPriority extends StatelessWidget {
                     IconButton(onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=>CreatePriority(model: PriorityTaskModel(), isUpdateMode: true)));
                     }, icon: Icon(Icons.edit)),
+                    IconButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>GetPriorities(model: PriorityTaskModel())));
+                    }, icon: Icon(Icons.arrow_forward)),
                   ],
                 ),
               );
