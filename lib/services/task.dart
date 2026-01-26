@@ -76,4 +76,32 @@ class TaskServices{
     );
   }
 
+  ///get all Favorite
+  Stream<List<TaskModel>> getFavoriteTask(String userID){
+    return FirebaseFirestore.instance
+        .collection(taskCollection)
+        .where("favorite", arrayContains: userID)
+        .snapshots()
+        .map((taskList)=> taskList.docs
+        .map((taskJson) => TaskModel.fromJson(taskJson.data())).toList(),
+    );
+
+  }
+  ///add to favorite
+  Future addToFavorite({required String userID, required String taskID})
+  async{
+    return await FirebaseFirestore.instance
+        .collection(taskCollection)
+        .doc(taskID)
+        .update({"favorite" : FieldValue.arrayUnion([userID])});
+  }
+  ///remove from favorite
+  Future removeFromFavorite({required String userID, required String taskID})
+  async{
+    return await FirebaseFirestore.instance
+        .collection(taskCollection)
+        .doc(taskID)
+        .update({"favorite" : FieldValue.arrayRemove([userID])});
+  }
+
 }

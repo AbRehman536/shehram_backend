@@ -2,21 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shehram_backend/models/task.dart';
 import 'package:shehram_backend/services/task.dart';
+import 'package:shehram_backend/views/get_favorite.dart';
 import 'package:shehram_backend/views/get_priority.dart';
 import 'package:shehram_backend/views/update_task.dart';
+
+import '../provider/user_provider.dart';
 
 class GetAllTask extends StatelessWidget {
   const GetAllTask({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Get All Task"),
         actions: [
           IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=> GetPriority()));
-          }, icon: Icon(Icons.category))
+          }, icon: Icon(Icons.category)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GetFavorite()));
+          }, icon: Icon(Icons.favorite)),
         ],
       ),
       body: StreamProvider.value(
@@ -33,6 +40,18 @@ class GetAllTask extends StatelessWidget {
                 subtitle: Text(taskList[index].description.toString()),
                 trailing: Row(
                   children: [
+                    IconButton(onPressed: ()async{
+                      if(taskList[index].favorite!.contains(userProvider.getUser().docId.toString())){
+                        await TaskServices().removeFromFavorite(
+                            userID: userProvider.getUser().docId.toString(),
+                            taskID: taskList[index].docId.toString());
+                      }
+                      else{
+                        TaskServices().addToFavorite(
+                            userID: userProvider.getUser().docId.toString(),
+                            taskID: taskList[index].docId.toString());
+                      }
+                    }, icon: Icon(taskList[index].favorite!.contains(userProvider.getUser().docId.toString()) ? Icons.favorite : Icons.favorite_border)),
                     IconButton(onPressed: ()async{
                       try{
                         await TaskServices().deleteTask(taskList[index].docId.toString());
