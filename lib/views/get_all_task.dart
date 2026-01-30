@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shehram_backend/models/task.dart';
 import 'package:shehram_backend/services/task.dart';
+import 'package:shehram_backend/views/get_completed.dart';
 import 'package:shehram_backend/views/get_favorite.dart';
+import 'package:shehram_backend/views/get_incompleted.dart';
 import 'package:shehram_backend/views/get_priority.dart';
+import 'package:shehram_backend/views/get_profile.dart';
 import 'package:shehram_backend/views/update_task.dart';
 
 import '../provider/user_provider.dart';
@@ -24,6 +27,15 @@ class GetAllTask extends StatelessWidget {
           IconButton(onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context)=> GetFavorite()));
           }, icon: Icon(Icons.favorite)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GetCompleted()));
+          }, icon: Icon(Icons.circle)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GetInCompleted()));
+          }, icon: Icon(Icons.incomplete_circle)),
+          IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context)=> GetProfile()));
+          }, icon: Icon(Icons.person)),
         ],
       ),
       body: StreamProvider.value(
@@ -40,6 +52,13 @@ class GetAllTask extends StatelessWidget {
                 subtitle: Text(taskList[index].description.toString()),
                 trailing: Row(
                   children: [
+                    Checkbox(
+                        value: taskList[index].isCompleted,
+                        onChanged: (val)async{
+                          await TaskServices().markAsCompletedTask(
+                              taskID: taskList[index].docId.toString(),
+                              isCompleted: val!);
+                        }),
                     IconButton(onPressed: ()async{
                       if(taskList[index].favorite!.contains(userProvider.getUser().docId.toString())){
                         await TaskServices().removeFromFavorite(
