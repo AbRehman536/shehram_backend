@@ -81,7 +81,7 @@ class GetAllTask extends StatelessWidget {
                     }, icon: Icon(Icons.delete)),
                     IconButton(onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> UpdateTask(model: taskList[index])));
-                    }, icon: Icon(Icons.edit))
+                    }, icon: Icon(Icons.edit_calendar))
                   ],
                 )
               );
